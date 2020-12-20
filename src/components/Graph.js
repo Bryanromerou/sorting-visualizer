@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Row from './Row';
 
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const Graph = () => {
 
@@ -39,18 +42,19 @@ const Graph = () => {
             console.log("That is not a number try again")
         }
         setInput("");
+        sorter();
     }
 
     const inputHandler = (e) =>{
         setInput(e.target.value)
     }
 
-    // const sorter = () =>{
-    //     for (let index = 0; index < 10; index++) {
-    //         const element = array[index];
-            
-    //     }
-    // }
+    const sorter = async() =>{
+        for (let index = 0; index < 10; index++) {
+            await sleep(100);
+            console.log("Hello")
+        }
+    }
 
     return (
         <div>
