@@ -22,22 +22,23 @@ class GraphClassComponent extends Component {
         console.log("mounted")
     }
 
-    submitHandler = () =>{
+    submitHandler = (e) =>{
+        e.preventDefault();
         this.setState((prevState)=>{
             const tempArr = prevState.arrOfNums.slice();
             const number = parseInt(this.state.inputVal)
             
-            tempArr.push(number);
-            const newRows = tempArr.map((elem,index)=>{
-                return <Row key = {index} number={elem} largestNum={this.largestNum}/>
-            });
             let newLargest = 1;
             if(number>prevState.largestNum){
                 newLargest = number;
             }else{
                 newLargest = prevState.largestNum;
             }
-            console.log(prevState.largestNum)
+            tempArr.push(number);
+            const newRows = tempArr.map((elem,index)=>{
+                return <Row key = {index} number={elem} largestNum={newLargest}/>
+            });
+
             // console.log(this);
             return {arrOfNums: tempArr, inputVal : "", rows: newRows, largestNum:newLargest}
         })
@@ -47,9 +48,15 @@ class GraphClassComponent extends Component {
         return (
             <div>
                 {this.state.inputVal}
-                <input type="text" placeholder="Enter Number" value={this.state.inputVal} onChange={(event)=> this.setState({ inputVal: event.target.value })}/>
-                <button onClick = {this.submitHandler}>Add Number</button>
-                {this.state.rows}
+                <form onSubmit={this.submitHandler}>
+                    <input type="text" placeholder="Enter Number" value={this.state.inputVal} onChange={(event)=> this.setState({ inputVal: event.target.value })}/>
+                    <input type="submit" name="Submit" value="Add Number"/>
+
+                </form>
+                {/* <button onClick = {this.submitHandler}>Add Number</button> */}
+                <div className="all_rows">
+                    {this.state.rows}
+                </div>
             </div>
         );
     }
