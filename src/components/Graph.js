@@ -23,6 +23,10 @@ const Graph = () => {
         });
         setRows(newRows);
     },[change])
+    // useEffect(() => {
+    //     // Update the document title using the browser API
+    //     console.log("what the fuck")
+    // });
 
     const submitHandler = (e) =>{
         //Prevents a rerender that would lose data info
@@ -42,7 +46,6 @@ const Graph = () => {
             console.log("That is not a number try again")
         }
         setInput("");
-        sorter();
     }
 
     const inputHandler = (e) =>{
@@ -50,10 +53,29 @@ const Graph = () => {
     }
 
     const sorter = async() =>{
-        for (let index = 0; index < 10; index++) {
-            await sleep(100);
-            console.log("Hello")
+        // await sleep(100);
+        let arr = arrOfNums;
+        var len = arr.length;
+        for (var i = len-1; i>=0; i--){
+            for(var j = 1; j<=i; j++){
+            await sleep(1000);
+            if(arr[j-1]>arr[j]){
+                var temp = arr[j-1];
+                arr[j-1] = arr[j];
+                arr[j] = temp;
+                console.log("yo")
+                console.log(arr);
+                console.log(arrOfNums);
+                changeArr(arr);
+                }
+            }
         }
+        console.log("Hello");
+    }
+
+    const changeArr = (arr) =>{
+        setArrOfNums(arr);
+        setChange(!change);
     }
 
     return (
@@ -65,6 +87,7 @@ const Graph = () => {
             <div className="all_rows">
                 {rows}
             </div>
+            <button onClick={sorter}>Sort</button>
         </div>
     );
 }
