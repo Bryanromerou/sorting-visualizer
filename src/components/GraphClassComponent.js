@@ -44,6 +44,31 @@ class GraphClassComponent extends Component {
         })
     }
 
+    sorter = async() =>{
+        // await sleep(100);
+        let arr = this.state.arrOfNums;
+        var len = arr.length;
+        for (let i = len-1; i>=0; i--){
+            for(let j = 1; j<=i; j++){
+                if(arr[j-1]>arr[j]){
+                await sleep(100);
+                var temp = arr[j-1];
+                arr[j-1] = arr[j];
+                arr[j] = temp;
+                console.log("yo")
+                // console.log(arr);
+                // console.log(arrOfNums);
+                // changeArr(arr);
+                const newRows = arr.map((elem,index)=>{
+                    return <Row key = {index} number={elem} largestNum={this.state.largestNum}/>
+                });
+                this.setState({rows:newRows,arrOfNums:arr})
+                }
+            }
+        }
+        console.log("Hello");
+    }
+
     render() {
         return (
             <div>
@@ -51,8 +76,8 @@ class GraphClassComponent extends Component {
                 <form onSubmit={this.submitHandler}>
                     <input type="text" placeholder="Enter Number" value={this.state.inputVal} onChange={(event)=> this.setState({ inputVal: event.target.value })}/>
                     <input type="submit" name="Submit" value="Add Number"/>
-
                 </form>
+                <button onClick={this.sorter}>Sort</button>
                 {/* <button onClick = {this.submitHandler}>Add Number</button> */}
                 <div className="all_rows">
                     {this.state.rows}
