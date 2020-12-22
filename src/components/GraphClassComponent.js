@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Row from './Row';
 
-
 function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 class GraphClassComponent extends Component {
@@ -19,66 +21,77 @@ class GraphClassComponent extends Component {
     }
 
     componentDidMount(){
-        console.log("mounted")
+
+        //Seeding the Data
+        const seedArr = [];
+        let largest = 1;
+        for(let i = 0; i< 50;i++){
+            const num = getRandomInt(100)+1;
+            if (num>largest) largest = num;
+            seedArr.push(num);
+        }
+        const newRows = seedArr.map((elem,index)=>{
+            return <Row key = {index} number={elem} largestNum={largest}/>
+        });
+        this.setState({arrOfNums: seedArr, rows: newRows, largestNum:largest})
+
     }
 
     submitHandler = (e) =>{
         e.preventDefault();
-        this.setState((prevState)=>{
-            const tempArr = prevState.arrOfNums.slice();
-            const number = parseInt(this.state.inputVal)
-            
-            let newLargest = 1;
-            if(number>prevState.largestNum){
-                newLargest = number;
-            }else{
-                newLargest = prevState.largestNum;
-            }
-            tempArr.push(number);
-            const newRows = tempArr.map((elem,index)=>{
-                return <Row key = {index} number={elem} largestNum={newLargest}/>
-            });
+        if(isNumber(this.state.inputVal)){
+            this.setState((prevState)=>{
+                const tempArr = prevState.arrOfNums.slice();
+                const number = parseInt(this.state.inputVal)
+                
+                let newLargest = 1;
+                if(number>prevState.largestNum){
+                    newLargest = number;
+                }else{
+                    newLargest = prevState.largestNum;
+                }
+                tempArr.push(number);
+                const newRows = tempArr.map((elem,index)=>{
+                    return <Row key = {index} number={elem} largestNum={newLargest}/>
+                });
 
-            // console.log(this);
-            return {arrOfNums: tempArr, inputVal : "", rows: newRows, largestNum:newLargest}
-        })
+                return {arrOfNums: tempArr, inputVal : "", rows: newRows, largestNum:newLargest}
+            })
+        }
+        this.setState({inputVal:""})
+
     }
 
     sorter = async() =>{
-        // await sleep(100);
+
         let arr = this.state.arrOfNums;
         var len = arr.length;
         for (let i = len-1; i>=0; i--){
             for(let j = 1; j<=i; j++){
+                await sleep(10);
                 if(arr[j-1]>arr[j]){
-                await sleep(100);
-                var temp = arr[j-1];
-                arr[j-1] = arr[j];
-                arr[j] = temp;
-                console.log("yo")
-                // console.log(arr);
-                // console.log(arrOfNums);
-                // changeArr(arr);
-                const newRows = arr.map((elem,index)=>{
-                    return <Row key = {index} number={elem} largestNum={this.state.largestNum}/>
-                });
-                this.setState({rows:newRows,arrOfNums:arr})
+                    var temp = arr[j-1];
+                    arr[j-1] = arr[j];
+                    arr[j] = temp;
+                    console.log("yo")
+                    const newRows = arr.map((elem,index)=>{
+                        return <Row key = {index} number={elem} largestNum={this.state.largestNum} beingCompared = {false}/>
+                    });
+                    this.setState({rows:newRows,arrOfNums:arr})
                 }
             }
         }
-        console.log("Hello");
+
     }
 
     render() {
         return (
             <div>
-                {this.state.inputVal}
                 <form onSubmit={this.submitHandler}>
                     <input type="text" placeholder="Enter Number" value={this.state.inputVal} onChange={(event)=> this.setState({ inputVal: event.target.value })}/>
                     <input type="submit" name="Submit" value="Add Number"/>
                 </form>
                 <button onClick={this.sorter}>Sort</button>
-                {/* <button onClick = {this.submitHandler}>Add Number</button> */}
                 <div className="all_rows">
                     {this.state.rows}
                 </div>
