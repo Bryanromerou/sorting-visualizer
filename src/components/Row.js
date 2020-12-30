@@ -6,7 +6,7 @@ const Row = (props) => {
     const height = 500*(props.number)/props.largestNum;
 
     return (
-        <div className="row" style={{width:"10px",height:`${height}px`}}>
+        <div className={`${props.beingCompared && 'compared' } row`} style={{width:"10px",height:`${height}px`}}>
             <h1>{props.number}</h1>
         </div>
     );
