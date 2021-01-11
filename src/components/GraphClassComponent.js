@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import Row from './Row';
+import { isNumber, sleep , getRandomInt} from '../helper/index';
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-function getRandomInt(max) {
-    return Math.floor(Math.random() * Math.floor(max));
-}
 
 class GraphClassComponent extends Component {
     constructor(props){
@@ -49,18 +43,17 @@ class GraphClassComponent extends Component {
 
     }
 
-    quickSort = async() =>{
+    bubbleSort = async() =>{
 
         let arr = this.state.arrOfNums;
         var len = arr.length;
         for (let i = len-1; i>=0; i--){
             for(let j = 1; j<=i; j++){
-                await sleep(10);
+                await sleep(1);
                 if(arr[j-1]>arr[j]){
                     var temp = arr[j-1];
                     arr[j-1] = arr[j];
                     arr[j] = temp;
-                    console.log("yo")
                 }
                 const newRows = arr.map((elem,index)=>{
                     if((i==index)||(j==index)){
@@ -75,10 +68,12 @@ class GraphClassComponent extends Component {
 
     }
 
+    
+
     reset = () =>{
         const seedArr = [];
         let largest = 1;
-        for(let i = 0; i< 20;i++){
+        for(let i = 0; i< 50;i++){
             const num = getRandomInt(100)+1;
             if (num>largest) largest = num;
             seedArr.push(num);
@@ -96,8 +91,12 @@ class GraphClassComponent extends Component {
                     <input type="text" placeholder="Enter Number" value={this.state.inputVal} onChange={(event)=> this.setState({ inputVal: event.target.value })}/>
                     <input type="submit" name="Submit" value="Add Number"/>
                 </form>
-                <button onClick={this.quickSort}>Bubble Sort</button>
-                <button onClick={this.reset}>Reset</button>
+
+                <div className="all_buttons">
+                    <button onClick={this.bubbleSort}>Bubble Sort</button>
+                    <button onClick={this.reset}>Reset</button>
+                </div>
+
                 <div className="all_rows">
                     {this.state.rows}
                 </div>

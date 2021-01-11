@@ -1,14 +1,15 @@
 .row{
     background-color: aqua;
-    margin: 10px;
+    margin: 2px;
     min-width: fit-content;
 }
 
 .all_rows{
     display: flex;
+    align-items: flex-end;
     flex-wrap: wrap;
 }
 
 .compared{
-    background-color: brown;
+    background-color: red;
 }

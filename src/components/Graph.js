@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Row from './Row';
+import { isNumber, sleep } from '../helper/index';
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); }
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 
 const Graph = () => {
 
@@ -23,17 +20,14 @@ const Graph = () => {
         });
         setRows(newRows);
     },[change])
-    // useEffect(() => {
-    //     // Update the document title using the browser API
-    //     console.log("what the fuck")
-    // });
+  
 
     const submitHandler = (e) =>{
-        //Prevents a rerender that would lose data info
-        e.preventDefault();
+        
+        e.preventDefault();//Prevents a rerender that would lose data info
 
-        //Will Store Number
-        const number = parseInt(input);
+        const number = parseInt(input);//Will Store Number
+
         if(isNumber(input)){//Checks if it is a number and if it is it adds it to the array
             const newArr = arrOfNums;
             newArr.push(number);
